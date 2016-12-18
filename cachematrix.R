@@ -26,8 +26,20 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## The cacheSolve() function is a cache-friendly version of the solve()
+## function. It expects as input an object created with makeCacheMatrix(),
+## and returns the output of the solve() function. However, if the
+## inverse of the matrix was already calculated and stored in the
+## makeCacheMatrix object (cached), it directly retrieves the cached value.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+	inv <- x$getinverse()
+	if(!is.null(inv)) {
+		message("getting cached inverse")
+		return(inv)
+	}
+	matrix <- x$get()
+	inv <- solve(matrix, ...)
+	x$setinverse(inv)
+	inv
 }
